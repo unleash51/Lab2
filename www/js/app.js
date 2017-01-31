@@ -82,11 +82,10 @@ angular.module('starter', ['ionic'])
     }
 
     $scope.doRefresh = function(){
-      $http.get('js/data.json').success(function(
-      data){
+      $http.get('js/data.json').success(function
+        (data){
         $scope.calendar = data.calendar;
-        $scope.$broadcast('scroll.refreshComplete'
-        );
+        $scope.$broadcast('scroll.refreshComplete');
       });
     } 
 
@@ -94,12 +93,8 @@ angular.module('starter', ['ionic'])
       item.star = !item.star;
     }
 
-    $scope.moveItem = function(item, fromIndex, 
-      toIndex){
-      $scope.artists.splice(fromIndex, 1);
-      $scope.artists.splice(toIndex, 0, item);
-    };
-  })
+  });
+}])
 
 .controller('ListController', ['$scope', '$http', '$state',function($scope, $http, $state){
   $http.get('js/data.json').success(function(data){
