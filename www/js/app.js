@@ -7,15 +7,10 @@ angular.module('starter', ['ionic'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
-      cordova.plugins.Keyboard.disableScroll(true);
     }
     if(window.StatusBar) {
       StatusBar.styleDefault();
@@ -23,24 +18,25 @@ angular.module('starter', ['ionic'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider){
+
+.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-    .state('tabs',{
+    .state('tabs', {
       url: '/tab',
       abstract: true,
       templateUrl: 'templates/tabs.html'
     })
-    
-    .state('tabs.home',{
+
+    .state('tabs.home', {
       url: '/home',
       views: {
         'home-tab' : {
-          templateUrl: 'templates/home.html',
+          templateUrl: 'templates/home.html'
         }
       }
     })
 
-    .state('tabs.list',{
+    .state('tabs.list', {
       url: '/list',
       views: {
         'list-tab' : {
@@ -50,7 +46,7 @@ angular.module('starter', ['ionic'])
       }
     })
 
-    .state('tabs.detail',{
+    .state('tabs.detail', {
       url: '/list/:aId',
       views: {
         'list-tab' : {
@@ -59,7 +55,8 @@ angular.module('starter', ['ionic'])
         }
       }
     })
-    .state('tabs.calendar',{
+
+    .state('tabs.calendar', {
       url: '/calendar',
       views: {
         'calendar-tab' : {
@@ -68,61 +65,59 @@ angular.module('starter', ['ionic'])
         }
       }
     })
-    $urlRouterProvider.otherwise('/tab/home');
+
+
+  $urlRouterProvider.otherwise('/tab/home');
 })
 
-.controller('CalendarController', ['$scope', '$http', '$state',function($scope, $http, $state){
-  $http.get('js/data.json').success(function(data){
-    $scope.calendar = data.calendar;
-    
-    $scope.onItemDelete = function(dayIndex, item){
-      $scope.calendar[dayIndex].schedule.splice($
-        scope.calendar[dayIndex].schedule
-        .indexOf(item), 1);
-    }
+.controller('CalendarController', ['$scope', '$http', '$state',
+    function($scope, $http, $state) {
+    $http.get('js/data.json').success(function(data) {
+      $scope.calendar = data.calendar;
 
-    $scope.doRefresh = function(){
-      $http.get('js/data.json').success(function
-        (data){
-        $scope.calendar = data.calendar;
-        $scope.$broadcast('scroll.refreshComplete');
-      });
-    } 
+      $scope.onItemDelete = function(dayIndex, item) {
+        $scope.calendar[dayIndex].schedule.splice($scope.calendar[dayIndex].schedule.indexOf(item), 1);
+      }
 
-    $scope.toggleStar = function(item){
-      item.star = !item.star;
-    }
+      $scope.doRefresh =function() {
+      $http.get('js/data.json').success(function(data) {
+          $scope.calendar = data.calendar;
+          $scope.$broadcast('scroll.refreshComplete');
+        });
+      }
 
-  });
+      $scope.toggleStar = function(item) {
+        item.star = !item.star;
+      }
+
+    });
 }])
 
-.controller('ListController', ['$scope', '$http', '$state',function($scope, $http, $state){
-  $http.get('js/data.json').success(function(data){
-    $scope.artists = data.artists;
-    $scope.whichartist=$state.params.aId
-    $scope.data = {showDelete: false, showReorder: false};
+.controller('ListController', ['$scope', '$http', '$state',
+    function($scope, $http, $state) {
+    $http.get('js/data.json').success(function(data) {
+      $scope.artists = data.artists;
+      $scope.whichartist=$state.params.aId;
+      $scope.data = { showDelete: false, showReorder: false };
 
-    $scope.onItemDelete = function(item){
-      $scope.artists.splice($scope.artists.indexOf(item), 1);
-    }
+      $scope.onItemDelete = function(item) {
+        $scope.artists.splice($scope.artists.indexOf(item), 1);
+      }
 
-    $scope.doRefresh = function(){
-      $http.get('js/data.json').success(function(
-      data){
-        $scope.artists = data;
-        $scope.$broadcast('scroll.refreshComplete'
-        );
-      });
-    } 
+      $scope.doRefresh =function() {
+      $http.get('js/data.json').success(function(data) {
+          $scope.artists = data;
+          $scope.$broadcast('scroll.refreshComplete'); 
+        });
+      }
 
-    $scope.toggleStar = function(item){
-      item.star = !item.star;
-    }
+      $scope.toggleStar = function(item) {
+        item.star = !item.star;
+      }
 
-    $scope.moveItem = function(item, fromIndex, 
-      toIndex){
-      $scope.artists.splice(fromIndex, 1);
-      $scope.artists.splice(toIndex, 0, item);
-    };
-  });
+      $scope.moveItem = function(item, fromIndex, toIndex) {
+        $scope.artists.splice(fromIndex, 1);
+        $scope.artists.splice(toIndex, 0, item);
+      };
+    });
 }]);
